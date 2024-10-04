@@ -1,4 +1,4 @@
 # mcgillfiamdashboard
 contains mcgill fiam dashboard 
 
-mcgillfiamhackathon.streamlit.app
+https://mcgillfiamdashboard.streamlit.app
