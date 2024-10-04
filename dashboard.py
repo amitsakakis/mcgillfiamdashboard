@@ -174,7 +174,7 @@ def main():
         # Display the sample predicted returns table and get the selected stock IDs
         selected_stocks = tabular_predicted_df()
 
-        st.write("The MSE metric applites to the single predicted period that includes the returns above."
+        st.write("The MSE metric applites to the single predicted period that includes the returns above.")
 
         # Display the ticker tape for the selected stock IDs
         if selected_stocks:
