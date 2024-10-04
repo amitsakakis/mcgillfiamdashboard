@@ -35,8 +35,8 @@ INTRO_XGB = "With the data de-noised, we train an XGBoost model on these approxi
     that the XGBoost far outperforms in terms of the MSE metric."
 
 # Update the file paths to the smaller data sets for demo purposes
-RAW_DATA_PATH = "/oracle_costco_data.csv"
-PREDICTED_RETURNS_PATH = "/predicted_returns_wavelet_mp.csv"
+RAW_DATA_PATH = "oracle_costco_data.csv"
+PREDICTED_RETURNS_PATH = "predicted_returns_wavelet_mp.csv"
 
 ################################
 ## Interactive widget helpers ##
