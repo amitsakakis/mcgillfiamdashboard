@@ -5,7 +5,9 @@ import pandas as pd
 
 def get_top_stocks():
     # List of top  stock tickers - can add to list whenever its just for visual
-    tickers = ["XRAY", "COST", "NVDA", "PEP", "KO", "WM", "XOM", "ETN", "DTE", "ORCL"]
+    tickers = ["XRAY", "COST", "NVDA", "PEP", "KO", "WM", "XOM", "ETN", "DTE", "ORCL", 'XRAY', 'META','PLNTR' , 'PEP','KO',
+        'WM', 'XOM', 'ETN', 'DTE', 'ORCL', 'NVDA', 'TSLA', 'NIO',
+        'AAPL']
 
     # Fetch current data for the tickers
     data = yf.download(tickers, period="1d", interval="1h")
