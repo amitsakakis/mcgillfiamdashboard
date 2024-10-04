@@ -41,7 +41,7 @@ def display_ticker_tape():
         .ticker-tape div {
             display: inline-block;
             padding-left: 100%;
-            animation: ticker 60s linear infinite;
+            animation: ticker 40s linear infinite;
         }
         @keyframes ticker {
             0%   { transform: translateX(0); }
