@@ -101,7 +101,7 @@ def stock_selection_demo():
         ax.plot(selected_data['date'], selected_data['XGB'], label='Predicted', color='blue')
         ax.plot(selected_data['date'], selected_data['stock_exret'], label='Real', color='orange')
         
-        ax.set_xlabel('Date (Years)')
+        
         ax.set_ylabel('Returns (%)')
         
         ax.xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter('%Y'))
