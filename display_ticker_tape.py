@@ -5,7 +5,7 @@ import pandas as pd
 
 def get_top_stocks():
     # List of top  stock tickers - can add to list whenever its just for visual
-    tickers = ["XRAY", "COST", "NVDA", "PEP", "KO", "WM", "XOM", "ETN", "DTE", "ORCL", 'XRAY', 'META','PLNTR' , 'PEP','KO',
+    tickers = ["XRAY", "COST", "NVDA", "PEP", "KO", "WM", "XOM", "ETN", "DTE", "ORCL", 'XRAY', 'META','PLTR' , 'PEP','KO',
         'WM', 'XOM', 'ETN', 'DTE', 'ORCL', 'NVDA', 'TSLA', 'NIO',
         'AAPL']
 
