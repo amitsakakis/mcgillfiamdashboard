@@ -101,8 +101,9 @@ def tabular_predicted_df():
 
 
 import numpy as np  # For normalization
+
 def stock_selection_demo():
-    # Load the dataset and convert date column to datetime
+    # Load the dataset and convert the date column to datetime
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
@@ -115,12 +116,10 @@ def stock_selection_demo():
 
     # Set default index based on availability of "BROWN SHOES"
     default_index = (
-        list(stocks).index(default_stock[0])
-        if len(default_stock) > 0
-        else 0  # Fall back to first stock if not found
+        list(stocks).index(default_stock[0]) if len(default_stock) > 0 else 0
     )
 
-    # Create a selectbox with BROWN SHOES as the default selection if available
+    # Create a selectbox with "BROWN SHOES" as the default selection if available
     selected_stock = st.selectbox(
         "Select a stock for portfolio analysis:", stocks, index=default_index
     )
@@ -150,11 +149,15 @@ def stock_selection_demo():
         ax.xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter("%Y"))
         plt.xticks(rotation=0)
 
-        # Add legend with R² and Hit Ratio
-        legend_text = f"R²: {r2:.2f} | Hit Ratio: {hit_ratio:.1f}"
+        # Create the legend text
+        legend_text = f"R²: {r2:.2f} | Hit Ratio: {hit_ratio:.1f}%"
+
+        # Add the legend to the plot
         ax.legend(title=legend_text)
 
+        # Display the plot in Streamlit
         st.pyplot(fig)
+
 
 
 
