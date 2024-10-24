@@ -158,36 +158,29 @@ def display_performance_metrics():
 
 
 def main():
-    # Create a container at the top for the ticker tape
-    top_container = st.container()
-    with top_container:
-        display_ticker_tape()  # Render ticker tape inside the top container
+    # Render the ticker tape in the sidebar to make it always visible
+    with st.sidebar:
+        display_ticker_tape()
 
-    # Use columns for the rest of the layout
     with col[1]:
         st.title("Vol Skew Team Model")
-
-        # Wavelet Model Section
         st.header("Discrete Wavelet Decomposition")
         st.write(INTRO_WAVELET_1)
         denoise_box_select_demo()
         st.write(INTRO_WAVELET_2)
 
-        # XGBoost Model Section
         st.header("XGBoost Predictor Model")
         st.write(INTRO_XGB)
 
-        # Display Predicted Returns Table and Get Selected Stock IDs
         selected_stocks = tabular_predicted_df()
         st.caption("The MSE metric applies to the single predicted period that includes the returns above.")
 
-        # Stock Selection Section
         st.subheader("Stock Selection")
         stock_selection_demo()
 
-        # Display Performance Metrics
         st.header("Performance Metrics")
         display_performance_metrics()
+
 
 if __name__ == "__main__":
     main()
