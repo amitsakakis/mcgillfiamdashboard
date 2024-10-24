@@ -8,7 +8,7 @@ def get_top_stocks():
     tickers = [
         "WGS", "SEZL", "LBPH", "RNA", "NISN", "BYRN", "FTEL", "XCH", 
     "TWI", "SPWR", "RUN", "ENPH", "BE", "BLNK", "GOEV", "PLUG", 
-    "FCEL", "FUBO", "RIDE", "SOFI"
+    "FCEL", "FUBO", "SOFI"
     ]
 
     # Fetch current data for the tickers
