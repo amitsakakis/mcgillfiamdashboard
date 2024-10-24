@@ -17,8 +17,8 @@ def get_top_stocks():
     # Handle NaN values by forward filling
     data = data.ffill().bfill()
     
-    current_data = data['Adj Close'].iloc[-1].reset_index()
-    previous_close_data = data['Adj Close'].iloc[-3].reset_index()
+    current_data = data['Adj Close'].iloc[0].reset_index()
+    previous_close_data = data['Adj Close'].iloc[-1].reset_index()
     
     current_data.columns = ['Ticker', 'Price']
     previous_close_data.columns = ['Ticker', 'Previous Price']
