@@ -101,31 +101,23 @@ def tabular_predicted_df():
 
 
 import numpy as np  # For normalization
-
-import numpy as np  # For random noise
-
 def stock_selection_demo():
     # Load the dataset with more historical data
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
     # Define a higher minimum data points threshold
-    MIN_DATA_POINTS = 50  # Ensure enough data for meaningful analysis
+    MIN_DATA_POINTS = 30  # Adjust this based on your dataset
 
-    # Function to calculate the hit ratio with slight random noise for realism
+    # Function to calculate hit ratio for valid stocks
     def calculate_hit_ratio(stock_df):
-        if len(stock_df) < MIN_DATA_POINTS:
+        if len(stock_df) < MIN_DATA_POINTS:  # Filter by data availability
             return None  # Exclude stocks with insufficient data
         y_true = stock_df["stock_exret"]
         y_pred = stock_df["XGB"]
+        return (y_true * y_pred > 0).mean() * 100  # Hit ratio as a percentage
 
-        # Calculate hit ratio and add a slight random variance
-        hit_ratio = (y_true * y_pred > 0).mean() * 100
-        noise = np.random.normal(0, 3)  # Random noise with mean 0 and std dev 3
-        hit_ratio_with_noise = max(0, min(hit_ratio + noise, 100))  # Ensure hit ratio stays between 0-100%
-        return hit_ratio_with_noise
-
-    # Calculate hit ratios and filter valid stocks
+    # Group by stock name, calculate hit ratios, and filter valid stocks
     hit_ratios = (
         df.groupby("comp_name")
         .apply(calculate_hit_ratio)
@@ -134,11 +126,8 @@ def stock_selection_demo():
     )
     hit_ratios.columns = ["comp_name", "Hit Ratio"]
 
-    # Filter to ensure only stocks with hit ratio > 40% are included
-    filtered_stocks = hit_ratios[hit_ratios["Hit Ratio"] > 40]
-
-    # Sort the remaining stocks by hit ratio in descending order
-    sorted_stocks = filtered_stocks.sort_values(by="Hit Ratio", ascending=False)
+    # Sort stocks by hit ratio in descending order
+    sorted_stocks = hit_ratios.sort_values(by="Hit Ratio", ascending=False)
 
     # Create a selection dropdown with the sorted stocks
     selected_stock = st.selectbox(
@@ -153,7 +142,7 @@ def stock_selection_demo():
         y_pred = selected_data["XGB"]
         r2 = 1 - (sum((y_true - y_pred) ** 2) / sum((y_true - y_true.mean()) ** 2))
 
-        # Retrieve the hit ratio for the selected stock
+        # Get the hit ratio for the selected stock
         hit_ratio = sorted_stocks.loc[
             sorted_stocks["comp_name"] == selected_stock, "Hit Ratio"
         ].values[0]
@@ -176,6 +165,7 @@ def stock_selection_demo():
         ax.legend(title=legend_text)
 
         st.pyplot(fig)
+
 
 
 def display_performance_metrics():
