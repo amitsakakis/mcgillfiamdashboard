@@ -80,18 +80,18 @@ def tabular_predicted_df():
             columns={
                 model_dic.get(model): "Predicted Returns",
                 "stock_exret": "Real Returns",
-                "permno": "Stock ID",
+                "comp_name": "Company Name",
                 f"MSE_{model_dic.get(model)}": "MSE",
             },
             inplace=True,
         )
 
-        new_df = df[["Stock ID", "Predicted Returns", "Real Returns", "MSE"]]
+        new_df = df[["Company Name", "Predicted Returns", "Real Returns", "MSE"]]
         st.subheader("Sample XGBoost Small/Mid Cap Predicted Returns")
         st.table(new_df.head(10))
 
         # Return the top 10 selected stock IDs
-        return new_df["Stock ID"].head(10).tolist()
+        return new_df["Company Name"].head(10).tolist()
     else:
         return []
 
@@ -154,8 +154,6 @@ def stock_selection_demo():
 
 
 
-
-
 def display_performance_metrics():
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     model_dic = {"XGBoost": "XGB"}
@@ -172,7 +170,7 @@ def display_performance_metrics():
         st.metric("Mean Absolute Error (MAE)", f"{mae:.4f}")
         st.markdown("""
     <div style="text-align: center;">
-        <h2>Average Hit Ratio: <span style="color:green; font-size:36px;">55%</span></h2>
+        <h2>Average Hit Ratio: <span style="color:green; font-size:60px;">55%</span></h2>
     </div>
     """, unsafe_allow_html=True)
         
