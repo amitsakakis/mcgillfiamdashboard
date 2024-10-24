@@ -158,12 +158,16 @@ def display_performance_metrics():
 
 
 def main():
-    # Display the ticker tape at the top
-    display_ticker_tape()
+    # Create a container at the top for the ticker tape
+    top_container = st.container()
+    with top_container:
+        display_ticker_tape()  # Render ticker tape inside the top container
 
+    # Use columns for the rest of the layout
     with col[1]:
-        # Wavelet Model Section
         st.title("Vol Skew Team Model")
+
+        # Wavelet Model Section
         st.header("Discrete Wavelet Decomposition")
         st.write(INTRO_WAVELET_1)
         denoise_box_select_demo()
@@ -184,7 +188,6 @@ def main():
         # Display Performance Metrics
         st.header("Performance Metrics")
         display_performance_metrics()
-
 
 if __name__ == "__main__":
     main()
