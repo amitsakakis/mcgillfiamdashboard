@@ -103,14 +103,23 @@ def tabular_predicted_df():
 import numpy as np  # For normalization
 
 def stock_selection_demo():
+    # Load the dataset and convert date column to datetime
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
+    # Get unique stock names
     stocks = df["comp_name"].unique()
 
-    selected_stock = st.selectbox("Select a stock for portfolio analysis:", stocks)
+    # Ensure 'BROWN SHOES' is in the list of stocks
+    default_index = list(stocks).index("BROWN SHOES") if "BROWN SHOES" in stocks else 0
+
+    # Create a selectbox with BROWN SHOES as the default selection
+    selected_stock = st.selectbox(
+        "Select a stock for portfolio analysis:", stocks, index=default_index
+    )
 
     if selected_stock:
+        # Filter data for the selected stock
         selected_data = df[df["comp_name"] == selected_stock]
 
         # Calculate R² value
@@ -119,7 +128,7 @@ def stock_selection_demo():
         r2 = 1 - (sum((y_true - y_pred) ** 2) / sum((y_true - y_true.mean()) ** 2))
 
         # Calculate Hit Ratio
-        hit_ratio = (y_true * y_pred > 0).mean() * 100  # Percentage of correct predictions
+        hit_ratio = (y_true * y_pred > 0).mean() * 100
 
         # Plotting the graph
         fig, ax = plt.subplots()
@@ -139,6 +148,7 @@ def stock_selection_demo():
         ax.legend(title=legend_text)
 
         st.pyplot(fig)
+
 
 
 
