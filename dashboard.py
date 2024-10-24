@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+plt.rcParams['text.usetex'] = True
 import streamlit as st
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import helpers as hp
@@ -151,7 +152,7 @@ def stock_selection_demo():
         plt.xticks(rotation=0)
 
         # Add legend with R² and Hit Ratio
-        legend_text = f"R²: {r2:.2f} | $\textbf{{\textcolor{{green}}{{Hit Ratio: {hit_ratio:.1f}\%}}}}$"
+        legend_text = f"R²: {r2:.2f} | {{\\textcolor{{green}}{{Hit Ratio: {hit_ratio:.1f}\\%}}}}$"
         ax.legend(title=legend_text)
 
         st.pyplot(fig)
