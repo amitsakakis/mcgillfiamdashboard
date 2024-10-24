@@ -107,13 +107,21 @@ def stock_selection_demo():
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
-    # Get unique stock names
+    # Optional: Store the known permno for BROWN SHOES (replace with actual permno if known)
+    brown_shoes_permno = 12345  # Replace with actual permno
+
+    # Filter to ensure the default stock is "BROWN SHOES" if available
+    default_stock = df[df["permno"] == brown_shoes_permno]["comp_name"].unique()
     stocks = df["comp_name"].unique()
 
-    # Ensure 'BROWN SHOES' is in the list of stocks
-    default_index = list(stocks).index("BROWN SHOES") if "BROWN SHOES" in stocks else 0
+    # Set default index based on availability of "BROWN SHOES"
+    default_index = (
+        list(stocks).index(default_stock[0])
+        if len(default_stock) > 0
+        else 0  # Fall back to first stock if not found
+    )
 
-    # Create a selectbox with BROWN SHOES as the default selection
+    # Create a selectbox with BROWN SHOES as the default selection if available
     selected_stock = st.selectbox(
         "Select a stock for portfolio analysis:", stocks, index=default_index
     )
