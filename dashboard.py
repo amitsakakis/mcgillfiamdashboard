@@ -101,14 +101,14 @@ def tabular_predicted_df():
 
 
 def stock_selection_demo():
-    # Load the dataset
+    # Load the dataset with more historical data
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
-    # Define the minimum number of data points required for a valid stock
-    MIN_DATA_POINTS = 10
+    # Define a higher minimum data points threshold
+    MIN_DATA_POINTS = 30  # Adjust this based on your dataset
 
-    # Function to calculate hit ratio and filter valid stocks
+    # Function to calculate hit ratio for valid stocks
     def calculate_hit_ratio(stock_df):
         if len(stock_df) < MIN_DATA_POINTS:  # Filter by data availability
             return None  # Exclude stocks with insufficient data
@@ -116,7 +116,7 @@ def stock_selection_demo():
         y_pred = stock_df["XGB"]
         return (y_true * y_pred > 0).mean() * 100  # Hit ratio as a percentage
 
-    # Calculate hit ratios and filter valid stocks
+    # Group by stock name, calculate hit ratios, and filter valid stocks
     hit_ratios = (
         df.groupby("comp_name")
         .apply(calculate_hit_ratio)
@@ -128,7 +128,7 @@ def stock_selection_demo():
     # Sort stocks by hit ratio in descending order
     sorted_stocks = hit_ratios.sort_values(by="Hit Ratio", ascending=False)
 
-    # Create a selection dropdown with the filtered and sorted stocks
+    # Create a selection dropdown with the sorted stocks
     selected_stock = st.selectbox(
         "Select a stock for portfolio analysis:", sorted_stocks["comp_name"]
     )
@@ -164,6 +164,7 @@ def stock_selection_demo():
         ax.legend(title=legend_text)
 
         st.pyplot(fig)
+
 
 
 
