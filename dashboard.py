@@ -107,8 +107,8 @@ def stock_selection_demo():
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
-    # Optional: Store the known permno for BROWN SHOES (replace with actual permno if known)
-    brown_shoes_permno = 12345  # Replace with actual permno
+    #
+    brown_shoes_permno = 10866 
 
     # Filter to ensure the default stock is "BROWN SHOES" if available
     default_stock = df[df["permno"] == brown_shoes_permno]["comp_name"].unique()
