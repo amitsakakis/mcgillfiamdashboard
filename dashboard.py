@@ -112,28 +112,33 @@ def stock_selection_demo():
     if selected_stock:
         selected_data = df[df["comp_name"] == selected_stock]
 
+        # Calculate R² value
+        y_true = selected_data["stock_exret"]
+        y_pred = selected_data["XGB"]
+        r2 = 1 - (sum((y_true - y_pred) ** 2) / sum((y_true - y_true.mean()) ** 2))
+
+        # Calculate Hit Ratio
+        hit_ratio = (y_true * y_pred > 0).mean() * 100  # Percentage of correct predictions
+
+        # Plotting the graph
         fig, ax = plt.subplots()
-        ax.plot(
-            selected_data["date"], selected_data["XGB"], label="Predicted", color="blue"
-        )
-        ax.plot(
-            selected_data["date"],
-            selected_data["stock_exret"],
-            label="Real",
-            color="orange",
-        )
+        ax.plot(selected_data["date"], y_pred, label="Predicted", color="blue")
+        ax.plot(selected_data["date"], y_true, label="Real", color="orange")
 
-       
+        # Set plot labels and title
         ax.set_ylabel("Returns (%)")
-
-        ax.xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter("%Y"))
         ax.set_title(f"Predicted vs Real Returns for {selected_stock}")
 
-        ax.legend()
-
+        # Customize the x-axis
+        ax.xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter("%Y"))
         plt.xticks(rotation=0)
 
+        # Add legend with R² and Hit Ratio
+        legend_text = f"R²: {r2:.2f} | Hit Ratio: {hit_ratio:.1f}%"
+        ax.legend(title=legend_text)
+
         st.pyplot(fig)
+
 
 
 def display_performance_metrics():
