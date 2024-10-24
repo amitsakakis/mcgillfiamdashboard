@@ -103,60 +103,23 @@ def tabular_predicted_df():
 import numpy as np  # For normalization
 
 def stock_selection_demo():
-    # Load the dataset with more historical data
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
-    # Define a higher minimum data points threshold
-    MIN_DATA_POINTS = 50  # Increased to ensure better data quality
+    stocks = df["comp_name"].unique()
 
-    # Function to calculate hit ratio for valid stocks
-    def calculate_hit_ratio(stock_df):
-        if len(stock_df) < MIN_DATA_POINTS:  # Filter by data availability
-            return None  # Exclude stocks with insufficient data
-        y_true = stock_df["stock_exret"]
-        y_pred = stock_df["XGB"]
-        return (y_true * y_pred > 0).mean() * 100  # Hit ratio as a percentage
-
-    # Group by stock name, calculate hit ratios, and filter valid stocks
-    hit_ratios = (
-        df.groupby("comp_name")
-        .apply(calculate_hit_ratio)
-        .dropna()  # Remove stocks without enough data
-        .reset_index()
-    )
-    hit_ratios.columns = ["comp_name", "Hit Ratio"]
-
-    # Filter to include only stocks with sufficient historical data
-    valid_stocks = df.groupby("comp_name").filter(lambda x: len(x) >= MIN_DATA_POINTS)
-
-    # Re-calculate hit ratios for filtered stocks
-    sorted_stocks = (
-        valid_stocks.groupby("comp_name")
-        .apply(calculate_hit_ratio)
-        .dropna()
-        .reset_index()
-        .sort_values(by="Hit Ratio", ascending=False)
-    )
-    sorted_stocks.columns = ["comp_name", "Hit Ratio"]
-
-    # Create a selection dropdown with the sorted stocks
-    selected_stock = st.selectbox(
-        "Select a stock for portfolio analysis:", sorted_stocks["comp_name"]
-    )
+    selected_stock = st.selectbox("Select a stock for portfolio analysis:", stocks)
 
     if selected_stock:
         selected_data = df[df["comp_name"] == selected_stock]
 
-        # Calculate R² value for the selected stock
+        # Calculate R² value
         y_true = selected_data["stock_exret"]
         y_pred = selected_data["XGB"]
         r2 = 1 - (sum((y_true - y_pred) ** 2) / sum((y_true - y_true.mean()) ** 2))
 
-        # Get the hit ratio for the selected stock
-        hit_ratio = sorted_stocks.loc[
-            sorted_stocks["comp_name"] == selected_stock, "Hit Ratio"
-        ].values[0]
+        # Calculate Hit Ratio
+        hit_ratio = (y_true * y_pred > 0).mean() * 100  # Percentage of correct predictions
 
         # Plotting the graph
         fig, ax = plt.subplots()
