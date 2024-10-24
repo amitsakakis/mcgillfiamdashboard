@@ -105,20 +105,30 @@ def stock_selection_demo():
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
-    # Calculate hit ratio for each stock
+    # Define the minimum number of data points required for a valid stock
+    MIN_DATA_POINTS = 10
+
+    # Function to calculate hit ratio and filter valid stocks
     def calculate_hit_ratio(stock_df):
+        if len(stock_df) < MIN_DATA_POINTS:  # Filter by data availability
+            return None  # Exclude stocks with insufficient data
         y_true = stock_df["stock_exret"]
         y_pred = stock_df["XGB"]
-        return (y_true * y_pred > 0).mean() * 100  # Hit ratio as percentage
+        return (y_true * y_pred > 0).mean() * 100  # Hit ratio as a percentage
 
-    # Group by stock name and calculate hit ratios
-    hit_ratios = df.groupby("comp_name").apply(calculate_hit_ratio).reset_index()
+    # Calculate hit ratios and filter valid stocks
+    hit_ratios = (
+        df.groupby("comp_name")
+        .apply(calculate_hit_ratio)
+        .dropna()  # Remove stocks without enough data
+        .reset_index()
+    )
     hit_ratios.columns = ["comp_name", "Hit Ratio"]
 
     # Sort stocks by hit ratio in descending order
     sorted_stocks = hit_ratios.sort_values(by="Hit Ratio", ascending=False)
 
-    # Create a selection dropdown with the sorted stocks
+    # Create a selection dropdown with the filtered and sorted stocks
     selected_stock = st.selectbox(
         "Select a stock for portfolio analysis:", sorted_stocks["comp_name"]
     )
@@ -154,6 +164,7 @@ def stock_selection_demo():
         ax.legend(title=legend_text)
 
         st.pyplot(fig)
+
 
 
 
