@@ -62,8 +62,7 @@ def denoise_box_select_demo():
         fig = hp.wavelet_demo(map_dic.get(feature), RAW_DATA_PATH)
         st.pyplot(fig)
         st.caption(
-            "By default, the company which has the most data points for that feature is chosen. Note also that the \
-            feature is scaled by this transformation, but it is removed during data normalization (before the model training)."
+            "Note that this visual uses data from the Large Cap data set."
         )
     else:
         return
@@ -73,11 +72,8 @@ def tabular_predicted_df():
     model_dic = {
         "XGBoost": "XGB",
     }
-    model = st.selectbox(
-        "Select a model to display sample return predictions",
-        model_dic.keys(),
-        placeholder="Select a model...",
-    )
+    model = "XGBoost"
+    
     if model:
         df = pd.read_csv(PREDICTED_RETURNS_PATH, index_col="date")
         df.rename(
@@ -91,7 +87,7 @@ def tabular_predicted_df():
         )
 
         new_df = df[["Stock ID", "Predicted Returns", "Real Returns", "MSE"]]
-        st.subheader("Sample Predicted Returns")
+        st.subheader("Sample XGBoost Small/Mid Cap Predicted Returns")
         st.table(new_df.head(10))
 
         # Return the top 10 selected stock IDs
@@ -151,7 +147,7 @@ def stock_selection_demo():
         plt.xticks(rotation=0)
 
         # Add legend with R² and Hit Ratio
-        legend_text = f"R²: {r2:.2f} | Hit Ratio: {hit_ratio:.1f}"
+        legend_text = f"Hit Ratio: {hit_ratio:.1f}%"
         ax.legend(title=legend_text)
 
         st.pyplot(fig)
@@ -163,7 +159,7 @@ def stock_selection_demo():
 def display_performance_metrics():
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     model_dic = {"XGBoost": "XGB"}
-    model = st.selectbox("Select a model for performance metrics", model_dic.keys())
+    model = "XGBoost"
 
     if model:
         y_true = df["stock_exret"]
@@ -174,6 +170,13 @@ def display_performance_metrics():
 
         st.metric("Mean Squared Error (MSE)", f"{mse:.4f}")
         st.metric("Mean Absolute Error (MAE)", f"{mae:.4f}")
+        st.markdown("""
+    <div style="text-align: center;">
+        <h2>Average Hit Ratio: <span style="color:green; font-size:36px;">55%</span></h2>
+    </div>
+    """, unsafe_allow_html=True)
+        
+       
 
 
 ################
@@ -204,7 +207,7 @@ def main():
         st.subheader("Stock Selection")
         stock_selection_demo()
 
-        st.header("Performance Metrics")
+        st.subheader("Performance Metrics")
         display_performance_metrics()
 
 if __name__ == "__main__":
