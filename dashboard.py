@@ -101,13 +101,14 @@ def tabular_predicted_df():
 
 
 import numpy as np  # For normalization
+
 def stock_selection_demo():
     # Load the dataset with more historical data
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
     # Define a higher minimum data points threshold
-    MIN_DATA_POINTS = 30  # Adjust this based on your dataset
+    MIN_DATA_POINTS = 50  # Increased to ensure better data quality
 
     # Function to calculate hit ratio for valid stocks
     def calculate_hit_ratio(stock_df):
@@ -126,8 +127,18 @@ def stock_selection_demo():
     )
     hit_ratios.columns = ["comp_name", "Hit Ratio"]
 
-    # Sort stocks by hit ratio in descending order
-    sorted_stocks = hit_ratios.sort_values(by="Hit Ratio", ascending=False)
+    # Filter to include only stocks with sufficient historical data
+    valid_stocks = df.groupby("comp_name").filter(lambda x: len(x) >= MIN_DATA_POINTS)
+
+    # Re-calculate hit ratios for filtered stocks
+    sorted_stocks = (
+        valid_stocks.groupby("comp_name")
+        .apply(calculate_hit_ratio)
+        .dropna()
+        .reset_index()
+        .sort_values(by="Hit Ratio", ascending=False)
+    )
+    sorted_stocks.columns = ["comp_name", "Hit Ratio"]
 
     # Create a selection dropdown with the sorted stocks
     selected_stock = st.selectbox(
