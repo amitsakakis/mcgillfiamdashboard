@@ -158,14 +158,13 @@ def display_performance_metrics():
 
 
 def main():
-    # Create a container at the top of the page
-    top_container = st.container()
-    with top_container:
-        display_ticker_tape()
-
-    # Layout columns and content go below the ticker tape
+    # Layout columns and content
     col = st.columns((2, 3, 2))
+
+    # Place the ticker tape inside the middle column for alignment
     with col[1]:
+        display_ticker_tape()  # Display ticker tape at the top
+
         st.title("Vol Skew Team Model")
         st.header("Discrete Wavelet Decomposition")
         st.write(INTRO_WAVELET_1)
