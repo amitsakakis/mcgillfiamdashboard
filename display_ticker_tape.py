@@ -4,7 +4,12 @@ import pandas as pd
 
 def get_top_stocks():
     # List of top stock tickers - can be expanded
-    tickers = ['AAPL']
+    tickers = [
+    "AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA", "BRK-B", "V", "JNJ",
+    "WMT", "JPM", "XOM", "BAC", "PG", "PFE", "DIS", "KO", "PEP", "CSCO",
+    "ORCL", "NFLX", "INTC", "CVX", "MA", "NKE", "T", "VZ", "ADBE", "PLTR"
+]
+
 
     # Fetch current data for the tickers
     data = yf.download(tickers, period="1d", interval="1h")
