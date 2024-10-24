@@ -111,28 +111,33 @@ def stock_selection_demo():
     if selected_stock:
         selected_data = df[df["comp_name"] == selected_stock]
 
+        # Calculate R² value
+        y_true = selected_data["stock_exret"]
+        y_pred = selected_data["XGB"]
+        r2 = 1 - (sum((y_true - y_pred) ** 2) / sum((y_true - y_true.mean()) ** 2))
+
+        # Calculate Hit Ratio
+        hit_ratio = (y_true * y_pred > 0).mean() * 100  # Percentage of correct predictions
+
+        # Plotting the graph
         fig, ax = plt.subplots()
-        ax.plot(
-            selected_data["date"], selected_data["XGB"], label="Predicted", color="blue"
-        )
-        ax.plot(
-            selected_data["date"],
-            selected_data["stock_exret"],
-            label="Real",
-            color="orange",
-        )
+        ax.plot(selected_data["date"], y_pred, label="Predicted", color="blue")
+        ax.plot(selected_data["date"], y_true, label="Real", color="orange")
 
-        ax.set_xlabel("Date (Years)")
+        # Set plot labels and title
         ax.set_ylabel("Returns (%)")
+        ax.set_title(f"Predicted vs Real Returns for {selected_stock}")
 
+        # Customize the x-axis
         ax.xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter("%Y"))
-        ax.set_title(f"Predicted vs Real Returns for Stock ID: {selected_stock}")
-
-        ax.legend()
-
         plt.xticks(rotation=0)
 
+        # Add legend with R² and Hit Ratio
+        legend_text = f"R²: {r2:.2f} | Hit Ratio: {hit_ratio:.1f}%"
+        ax.legend(title=legend_text)
+
         st.pyplot(fig)
+
 
 
 def display_performance_metrics():
@@ -157,33 +162,31 @@ def display_performance_metrics():
 
 
 def main():
-    with col[1]:
-        st.title("Vol Skew Team Model")
+    # Layout columns and content
+    col = st.columns((2, 3, 2))
 
-        # Wavelet Model
+    # Place the ticker tape inside the middle column for alignment
+    with col[1]:
+        display_ticker_tape()  # Display ticker tape at the top
+
+        st.title("Vol Skew Team Model")
         st.header("Discrete Wavelet Decomposition")
         st.write(INTRO_WAVELET_1)
         denoise_box_select_demo()
         st.write(INTRO_WAVELET_2)
 
-        # XGBoost Model
         st.header("XGBoost Predictor Model")
         st.write(INTRO_XGB)
 
-        # Display the sample predicted returns table and get the selected stock IDs
         selected_stocks = tabular_predicted_df()
+        st.caption("The MSE metric applies to the single predicted period that includes the returns above.")
 
-        # Display the ticker tape for the selected stock IDs
-        if selected_stocks:
-            display_ticker_tape()
-
-        # Stock Selection
         st.subheader("Stock Selection")
         stock_selection_demo()
 
         st.header("Performance Metrics")
         display_performance_metrics()
 
-
 if __name__ == "__main__":
     main()
+
