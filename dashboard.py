@@ -101,14 +101,13 @@ def tabular_predicted_df():
 
 
 import numpy as np  # For normalization
-
 def stock_selection_demo():
     # Load the dataset and convert date column to datetime
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
-    # Optional: Store the known permno for BROWN SHOES (replace with actual permno if known)
-    brown_shoes_permno = 10866 # Replace with actual permno
+    # Set the permno for "BROWN SHOES"
+    brown_shoes_permno = 10866
 
     # Filter to ensure the default stock is "BROWN SHOES" if available
     default_stock = df[df["permno"] == brown_shoes_permno]["comp_name"].unique()
@@ -152,11 +151,10 @@ def stock_selection_demo():
         plt.xticks(rotation=0)
 
         # Add legend with R² and Hit Ratio
-        legend_text = f"R²: {r2:.2f} | Hit Ratio: {hit_ratio:.1f}%"
+        legend_text = f"R²: {r2:.2f} | Hit Ratio: {hit_ratio:.1f}"
         ax.legend(title=legend_text)
 
         st.pyplot(fig)
-
 
 
 
