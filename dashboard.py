@@ -36,7 +36,7 @@ INTRO_XGB = (
 
 # Update the file paths to the smaller data sets for demo purposes
 RAW_DATA_PATH = "./oracle_costco_data.csv"
-PREDICTED_RETURNS_PATH = "./predicted_returns_wavelet_mp.csv"
+PREDICTED_RETURNS_PATH = "./predicted_returns_wavelet_final2.csv"
 
 ################################
 ## Interactive widget helpers ##
@@ -71,7 +71,6 @@ def denoise_box_select_demo():
 
 def tabular_predicted_df():
     model_dic = {
-        "Simple Decision Tree": "DecTree",
         "XGBoost": "XGB",
     }
     model = st.selectbox(
@@ -138,7 +137,7 @@ def stock_selection_demo():
 
 def display_performance_metrics():
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
-    model_dic = {"Simple Decision Tree": "DecTree", "XGBoost": "XGB"}
+    model_dic = {"XGBoost": "XGB"}
     model = st.selectbox("Select a model for performance metrics", model_dic.keys())
 
     if model:

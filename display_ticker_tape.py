@@ -8,11 +8,10 @@ def get_top_stocks():
     tickers = ["XRAY", "COST", "NVDA", "PEP", "KO", "WM", "XOM", "ETN", "DTE", "ORCL"]
 
     # Fetch current data for the tickers
-    data = yf.download(tickers, period="5d", interval="1d")
+    data = yf.download(tickers, period="5d", interval="1h")
 
     # Handle NaN values by forward filling
     data = data.ffill().bfill()
-
     current_data = data["Adj Close"].iloc[-1].reset_index()
     previous_close_data = data["Adj Close"].iloc[-2].reset_index()
 
