@@ -6,26 +6,9 @@ import pandas as pd
 def get_top_stocks():
     # List of top  stock tickers - can add to list whenever its just for visual
     tickers = [
-        "AAPL",
-        "MSFT",
-        "GOOG",
-        "AMZN",
-        "META",
-        "TSLA",
-        "NVDA",
-        "BRK-B",
-        "JNJ",
-        "WMT",
-        "JPM",
-        "V",
-        "PG",
-        "DIS",
-        "MA",
-        "PYPL",
-        "NFLX",
-        "INTC",
-        "ADBE",
-        "CSCO",
+        "WGS", "SEZL", "LBPH", "RNA", "NISN", "BYRN", "FTEL", "XCH", 
+    "TWI", "SPWR", "RUN", "ENPH", "BE", "BLNK", "GOEV", "PLUG", 
+    "FCEL", "FUBO", "RIDE", "SOFI"
     ]
 
     # Fetch current data for the tickers
