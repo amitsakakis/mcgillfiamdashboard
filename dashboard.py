@@ -158,32 +158,30 @@ def display_performance_metrics():
 
 
 def main():
-    with col[1]:
+    # Display the ticker tape at the top
+    display_ticker_tape()
 
-        # Wavelet Model
+    with col[1]:
+        # Wavelet Model Section
+        st.title("Vol Skew Team Model")
         st.header("Discrete Wavelet Decomposition")
         st.write(INTRO_WAVELET_1)
         denoise_box_select_demo()
         st.write(INTRO_WAVELET_2)
 
-        # XGBoost Model
+        # XGBoost Model Section
         st.header("XGBoost Predictor Model")
         st.write(INTRO_XGB)
 
-        # Display the sample predicted returns table and get the selected stock IDs
+        # Display Predicted Returns Table and Get Selected Stock IDs
         selected_stocks = tabular_predicted_df()
-
         st.caption("The MSE metric applies to the single predicted period that includes the returns above.")
 
-                # Display the ticker tape for the selected stock IDs
-        if selected_stocks:
-            display_ticker_tape()
-        st.title("Vol Skew Team Model")
-
-        # Stock Selection
+        # Stock Selection Section
         st.subheader("Stock Selection")
         stock_selection_demo()
 
+        # Display Performance Metrics
         st.header("Performance Metrics")
         display_performance_metrics()
 
