@@ -118,7 +118,7 @@ def stock_selection_demo():
 
     # Create a selectbox with BROWN SHOES as the default selection if available
     selected_stock = st.selectbox(
-        "Select a stock for portfolio analysis:", stocks, index=default_index
+        "Select a small/mid cap stock for portfolio analysis:", stocks, index=default_index
     )
 
     if selected_stock:
@@ -193,7 +193,7 @@ def main():
         display_ticker_tape()  # Display ticker tape at the top
 
         st.title("Vol Skew Team Model")
-        st.header("Discrete Wavelet Decomposition")
+        st.header("Discrete Wavelet Decomposition 🌊")
         st.write(INTRO_WAVELET_1)
         denoise_box_select_demo()
         st.write(INTRO_WAVELET_2)

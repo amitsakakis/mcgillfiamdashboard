@@ -7,14 +7,12 @@ def get_top_stocks():
     # List of top  stock tickers - can add to list whenever its just for visual
     tickers = [
         "WGS", "SEZL", "LBPH", "RNA", "NISN", "BYRN", "FTEL", "XCH", 
-    "TWI", "SPWR", "RUN", "ENPH", "BE", "BLNK", "GOEV", "PLUG", 
+    "TWI", "RUN", "ENPH", "BE", "BLNK", "GOEV", "PLUG", 
     "FCEL", "FUBO", "SOFI"
     ]
 
     # Fetch current data for the tickers
-    data = yf.download(tickers, period="5d", interval="1h")
-
-    data = yf.download(tickers, period="5d", interval="1h")
+    data = yf.download(tickers, period="5d", interval="1d")
 
     # Handle NaN values by forward filling
     data = data.ffill().bfill()
