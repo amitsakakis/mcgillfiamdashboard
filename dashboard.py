@@ -207,7 +207,7 @@ def main():
         st.subheader("Stock Selection")
         stock_selection_demo()
 
-        st.subheader("Performance Metrics")
+        st.subheader("Model Performance Metrics")
         display_performance_metrics()
 
 if __name__ == "__main__":
