@@ -158,10 +158,13 @@ def display_performance_metrics():
 
 
 def main():
-    # Render the ticker tape in the sidebar to make it always visible
-    with st.sidebar:
+    # Create a container at the top of the page
+    top_container = st.container()
+    with top_container:
         display_ticker_tape()
 
+    # Layout columns and content go below the ticker tape
+    col = st.columns((2, 3, 2))
     with col[1]:
         st.title("Vol Skew Team Model")
         st.header("Discrete Wavelet Decomposition")
@@ -181,6 +184,6 @@ def main():
         st.header("Performance Metrics")
         display_performance_metrics()
 
-
 if __name__ == "__main__":
     main()
+
