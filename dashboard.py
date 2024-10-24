@@ -159,6 +159,9 @@ def display_performance_metrics():
 
 def main():
     with col[1]:
+        # Display the ticker tape for the selected stock IDs
+        if selected_stocks:
+            display_ticker_tape()
         st.title("Vol Skew Team Model")
 
         # Wavelet Model
@@ -175,10 +178,6 @@ def main():
         selected_stocks = tabular_predicted_df()
 
         st.caption("The MSE metric applies to the single predicted period that includes the returns above.")
-
-        # Display the ticker tape for the selected stock IDs
-        if selected_stocks:
-            display_ticker_tape()
 
         # Stock Selection
         st.subheader("Stock Selection")
