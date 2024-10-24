@@ -101,23 +101,40 @@ def tabular_predicted_df():
 
 
 def stock_selection_demo():
+    # Load the dataset
     df = pd.read_csv(PREDICTED_RETURNS_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
-    stocks = df["comp_name"].unique()
+    # Calculate hit ratio for each stock
+    def calculate_hit_ratio(stock_df):
+        y_true = stock_df["stock_exret"]
+        y_pred = stock_df["XGB"]
+        return (y_true * y_pred > 0).mean() * 100  # Hit ratio as percentage
 
-    selected_stock = st.selectbox("Select a stock for portfolio analysis:", stocks)
+    # Group by stock name and calculate hit ratios
+    hit_ratios = df.groupby("comp_name").apply(calculate_hit_ratio).reset_index()
+    hit_ratios.columns = ["comp_name", "Hit Ratio"]
+
+    # Sort stocks by hit ratio in descending order
+    sorted_stocks = hit_ratios.sort_values(by="Hit Ratio", ascending=False)
+
+    # Create a selection dropdown with the sorted stocks
+    selected_stock = st.selectbox(
+        "Select a stock for portfolio analysis:", sorted_stocks["comp_name"]
+    )
 
     if selected_stock:
         selected_data = df[df["comp_name"] == selected_stock]
 
-        # Calculate R² value
+        # Calculate R² value for the selected stock
         y_true = selected_data["stock_exret"]
         y_pred = selected_data["XGB"]
         r2 = 1 - (sum((y_true - y_pred) ** 2) / sum((y_true - y_true.mean()) ** 2))
 
-        # Calculate Hit Ratio
-        hit_ratio = (y_true * y_pred > 0).mean() * 100  # Percentage of correct predictions
+        # Get the hit ratio for the selected stock
+        hit_ratio = sorted_stocks.loc[
+            sorted_stocks["comp_name"] == selected_stock, "Hit Ratio"
+        ].values[0]
 
         # Plotting the graph
         fig, ax = plt.subplots()
@@ -137,6 +154,7 @@ def stock_selection_demo():
         ax.legend(title=legend_text)
 
         st.pyplot(fig)
+
 
 
 
