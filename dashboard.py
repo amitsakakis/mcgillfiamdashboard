@@ -151,13 +151,13 @@ def stock_selection_demo():
         ax.xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter("%Y"))
         plt.xticks(rotation=0)
 
-        # Use HTML to style the Hit Ratio in bold and green
-        legend_text = (
-            f"R²: {r2:.2f} | "
-            f"<span style='color:green; font-weight:bold;'>Hit Ratio: {hit_ratio:.1f}%</span>"
+        # Display R² and Hit Ratio in Streamlit with styling
+        st.markdown(
+            f"**R²**: {r2:.2f} | <span style='color:green; font-weight:bold;'>Hit Ratio: {hit_ratio:.1f}%</span>",
+            unsafe_allow_html=True,
         )
-        ax.legend(title=legend_text)
 
+        # Display the plot
         st.pyplot(fig)
 
 
